@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Posts{% endblock %}
+
+{% block content %}
+
+    {% if top_admin %}
+        Oh wow it's the super admin!
+    {% endif %}
+
+    <br/>
+
+    Create new post: <br/>
+    <form action="/post" method="POST">
+        <input type="text" placeholder="Enter Title" name="title" required> <br/>
+        <input type="textarea" placeholder="Enter Text" name="text" required> <br/>
+        <input type="hidden" placeholder="-1" name="reply_to" required> <br/>
+        <button type="submit">Post</button>
+    </form>
+
+    <br/>
+
+    {% if posts|length==0 %}
+        No posts found.
+    {% else %}
+        {% for title, text, id, time, replies in posts %}
+            <h1>
+                Title: {{ title }}
+            </h1>
+            Text: {{ text }}
+            <br/>
+            Replies <br/>
+            {% if replies|length==0 %}
+                No replies yet.
+                Add a reply: 
+                <form action="/post" method="POST">
+                    <input type="text" placeholder="Enter Title" name="title" required> <br/>
+                    <input type="textarea" placeholder="Enter Text" name="text" required> <br/>
+                    <input type="hidden" value="{{ id }}" name="reply_to" required> <br/>
+                    <button type="submit">Post</button>
+                </form>
+            {% else %}
+                {% for title, text, time, post_id in replies %}
+                    <h3>
+                        Reply Title: {{ title }}
+                    </h3>
+                    Reply Text: {{ text }}
+                    <br/>
+
+                    {% if loop.index==replies|length %}
+                        Add a reply: 
+                        <form action="/post" method="POST">
+                            <input type="text" placeholder="Enter Title" name="title" required> <br/>
+                            <input type="textarea" placeholder="Enter Text" name="text" required> <br/>
+                            <input type="hidden" value="{{ id }}" name="reply_to" required> <br/>
+                            <button type="submit">Post</button>
+                        </form>
+                    {% endif %}
+                {%  endfor %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

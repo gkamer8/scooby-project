@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block head %} {% endblock %}
+    <title>{% block title %}{% endblock %} - Sexual Frustration</title>
+</head>
+<body>
+    <div id="header">
+        <span id="main_title">Sexual Frustration</span>
+        {% if loggedin %}
+            <a class="header_item" href="/">Home</a>
+            <span class="header_item" id="username">{{ username }}</span>
+            <a class="header_item" id='logout' href="/logout">Logout</a>
+            <a class="header_item" href="/post">Posts</a><br/>
+        {% else %}
+            <a class="header_item" id="login" href="/login">Login</a>
+        {% endif %}
+    </div>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="footer">
+        {% block footer %}
+        &copy; Copyright 2022 by Gabriel Lopez and Gordon Kamer
+        {% endblock %}
+    </div>
+</body>
+</html>
